@@ -29,7 +29,7 @@ public class LoginCourierTest extends BaseTest {
     }
 
     @Test
-    public void ErrorWhileLoginCourierWithoutLoginTest() {
+    public void errorWhileLoginCourierWithoutLoginTest() {
         courier = new Courier();
         courier.setPassword(RandomStringUtils.randomAlphabetic(14));
 
@@ -39,7 +39,7 @@ public class LoginCourierTest extends BaseTest {
     }
 
     @Test
-    public void ErrorWhileLoginCourierWithoutPasswordTest() {
+    public void errorWhileLoginCourierWithoutPasswordTest() {
         courier = new Courier();
         courier.setLogin(RandomStringUtils.randomAlphabetic(14));
 
@@ -49,7 +49,7 @@ public class LoginCourierTest extends BaseTest {
     }
 
     @Test
-    public void ErrorWhileLoginCourierWithIncorrectPareLoginPasswordTest() {
+    public void errorWhileLoginCourierWithIncorrectPareLoginPasswordTest() {
         courier = new Courier();
         courier.setLogin(RandomStringUtils.randomAlphabetic(14));
         courier.setPassword(RandomStringUtils.randomAlphabetic(14));
