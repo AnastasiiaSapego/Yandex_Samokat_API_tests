@@ -3,6 +3,8 @@ package ru.practicum.model;
 import java.util.List;
 
 public class Order {
+    private Integer id;
+    private Integer courierId;
     private String firstName;
     private String lastName;
     private String address;
@@ -10,8 +12,12 @@ public class Order {
     private String phone;
     private Integer rentTime;
     private String deliveryDate;
+    private Integer track;
     private String comment;
     private List<String> color;
+    private String createdAt;
+    private String updatedAt;
+    private Integer status;
 
     public Order(String firstName, String lastName, String address, String metroStation, String phone, Integer rentTime, String deliveryDate, String comment) {
         this.firstName = firstName;
@@ -27,11 +33,11 @@ public class Order {
     public Order() {
     }
 
-    public List getColor() {
+    public List<String> getColor() {
         return color;
     }
 
-    public Order setColor(List color) {
+    public Order setColor(List<String> color) {
         this.color = color;
         return this;
     }
@@ -105,6 +111,60 @@ public class Order {
 
     public Order setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public Order setStatus(Integer status) {
+        this.status = status;
+        return this;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Order setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public Order setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public Integer getTrack() {
+        return track;
+    }
+
+    public Order setTrack(Integer track) {
+        this.track = track;
+        return this;
+    }
+
+    public Integer getCourierId() {
+        return courierId;
+    }
+
+    public Order setCourierId(Integer courierId) {
+        this.courierId = courierId;
+        return this;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Order setId(Integer id) {
+        this.id = id;
         return this;
     }
 }

@@ -1,5 +1,6 @@
 package ru.practicum.tests;
 
+import io.qameta.allure.Allure;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import ru.practicum.model.Courier;
@@ -13,7 +14,7 @@ public class CreateCourierTest extends BaseTest {
     private CourierSteps courierSteps = new CourierSteps();
 
     @Test
-    public void CreateCourierTest() {
+    public void shouldCreateCourierTest() {
         Courier courier = new Courier();
         courier.setLogin(RandomStringUtils.randomAlphabetic(14))
                 .setPassword(RandomStringUtils.randomAlphabetic(14))
@@ -26,7 +27,7 @@ public class CreateCourierTest extends BaseTest {
     }
 
     @Test
-    public void CreateCourierWithoutFirstName() {
+    public void createCourierWithoutFirstName() {
         Courier courier = new Courier();
         courier.setLogin(RandomStringUtils.randomAlphabetic(14))
                 .setPassword(RandomStringUtils.randomAlphabetic(14));
@@ -38,7 +39,7 @@ public class CreateCourierTest extends BaseTest {
     }
 
     @Test
-    public void ErrorWhileCreationCourierWithTheSameLogin() {
+    public void errorWhileCreationCourierWithTheSameLogin() {
         Courier courier = new Courier();
         courier.setLogin(RandomStringUtils.randomAlphabetic(14))
                 .setPassword(RandomStringUtils.randomAlphabetic(14))
@@ -56,7 +57,7 @@ public class CreateCourierTest extends BaseTest {
     }
 
     @Test
-    public void ErrorWhileCreationCourierWithoutLogin() {
+    public void errorWhileCreationCourierWithoutLogin() {
         Courier courierWithoutLogin = new Courier();
         courierWithoutLogin.setPassword(RandomStringUtils.randomAlphabetic(14))
                 .setFirstName(RandomStringUtils.randomAlphabetic(14));
@@ -68,7 +69,7 @@ public class CreateCourierTest extends BaseTest {
     }
 
     @Test
-    public void ErrorWhileCreationCourierWithoutPassword() {
+    public void errorWhileCreationCourierWithoutPassword() {
         Courier courierWithoutPassword = new Courier();
         courierWithoutPassword.setLogin(RandomStringUtils.randomAlphabetic(14))
                     .setFirstName(RandomStringUtils.randomAlphabetic(14));
@@ -79,10 +80,12 @@ public class CreateCourierTest extends BaseTest {
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 
-    void cleanCourier(Courier courier) {
+    public void cleanCourier(Courier courier) {
         Integer id = courierSteps.loginCourier(courier)
                 .extract().body().path("id");
         courier.setId(id);
-        courierSteps.deleteCourier(courier);
+        Allure.step("Удаление курьера по id", () -> {
+            courierSteps.deleteCourier(courier);
+        });
     }
 }
