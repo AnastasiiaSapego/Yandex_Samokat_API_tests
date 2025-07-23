@@ -3,17 +3,18 @@ package ru.practicum.tests;
 import org.junit.Test;
 import ru.practicum.model.ListOfOrders;
 import ru.practicum.model.Order;
-import ru.practicum.steps.CourierSteps;
+import ru.practicum.steps.OrderSteps;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertFalse;
 
 public class ListOfOrdersTest extends BaseTest {
 
-    private CourierSteps courierSteps = new CourierSteps();
+    private OrderSteps orderSteps = new OrderSteps();
 
     @Test
     public void listOfOrdersTest() {
-        ListOfOrders listOfOrders = courierSteps.getOrders()
+        ListOfOrders listOfOrders = orderSteps.getOrders()
                 .statusCode(200)
                 .extract().as(ListOfOrders.class);
 

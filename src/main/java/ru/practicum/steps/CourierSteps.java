@@ -5,16 +5,19 @@ import static io.restassured.RestAssured.*;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import ru.practicum.model.Courier;
-import ru.practicum.model.Order;
 
 public class CourierSteps {
+    private static final String COURIER_ENDPOINT = "/api/v1/courier";
+    private static final String COURIER_DETAIL_ENDPOINT = "/api/v1/courier/{id}";
+    private static final String COURIER_LOGIN_ENDPOINT = "/api/v1/courier/login";
+
 
     @Step("Создание курьера")
     public ValidatableResponse createCourier(Courier courier) {
         return     given()
                 .body(courier)
                 .when()
-                .post("/api/v1/courier")
+                .post(COURIER_ENDPOINT)
                 .then();
     }
 
@@ -23,7 +26,7 @@ public class CourierSteps {
         return      given()
                 .body(courier)
                 .when()
-                .post("/api/v1/courier/login")
+                .post(COURIER_LOGIN_ENDPOINT)
                 .then();
     }
 
@@ -32,24 +35,7 @@ public class CourierSteps {
         given()
                 .pathParams("id", courier.getId())
                 .when()
-                .delete("/api/v1/courier/{id}")
-                .then();
-    }
-
-    @Step("Создание заказа")
-    public ValidatableResponse createOrder(Order order) {
-        return      given()
-                .body(order)
-                .when()
-                .post("/api/v1/orders")
-                .then();
-    }
-
-    @Step("Получение списка заказов")
-    public ValidatableResponse getOrders() {
-        return      given()
-                .when()
-                .get("/api/v1/orders")
+                .delete(COURIER_DETAIL_ENDPOINT)
                 .then();
     }
 }
