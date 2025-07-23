@@ -2,6 +2,8 @@ package ru.practicum.tests;
 
 import io.qameta.allure.Allure;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import ru.practicum.model.Courier;
 import ru.practicum.steps.CourierSteps;
@@ -12,10 +14,17 @@ import static org.hamcrest.Matchers.is;
 public class CreateCourierTest extends BaseTest {
 
     private CourierSteps courierSteps = new CourierSteps();
+    private Courier courier;
+    private Integer courierId;
+
+    @Before
+    public void setUp() {
+        courier = new Courier();
+        courierId = null;
+    }
 
     @Test
     public void shouldCreateCourierTest() {
-        Courier courier = new Courier();
         courier.setLogin(RandomStringUtils.randomAlphabetic(14))
                 .setPassword(RandomStringUtils.randomAlphabetic(14))
                 .setFirstName(RandomStringUtils.randomAlphabetic(14));
@@ -23,24 +32,20 @@ public class CreateCourierTest extends BaseTest {
                 .createCourier(courier)
                 .statusCode(201)
                 .body("ok", is(true));
-        cleanCourier(courier);
     }
 
     @Test
     public void createCourierWithoutFirstName() {
-        Courier courier = new Courier();
         courier.setLogin(RandomStringUtils.randomAlphabetic(14))
                 .setPassword(RandomStringUtils.randomAlphabetic(14));
         courierSteps
                 .createCourier(courier)
                 .statusCode(201)
                 .body("ok", equalTo(true));
-        cleanCourier(courier);
     }
 
     @Test
     public void errorWhileCreationCourierWithTheSameLogin() {
-        Courier courier = new Courier();
         courier.setLogin(RandomStringUtils.randomAlphabetic(14))
                 .setPassword(RandomStringUtils.randomAlphabetic(14))
                 .setFirstName(RandomStringUtils.randomAlphabetic(14));
@@ -53,39 +58,40 @@ public class CreateCourierTest extends BaseTest {
                 .createCourier(courier)
                 .statusCode(409)
                 .body("message", equalTo("Этот логин уже используется"));
-        cleanCourier(courier);
     }
 
     @Test
     public void errorWhileCreationCourierWithoutLogin() {
-        Courier courierWithoutLogin = new Courier();
-        courierWithoutLogin.setPassword(RandomStringUtils.randomAlphabetic(14))
+        courier.setPassword(RandomStringUtils.randomAlphabetic(14))
                 .setFirstName(RandomStringUtils.randomAlphabetic(14));
 
         courierSteps
-                .createCourier(courierWithoutLogin)
+                .createCourier(courier)
                 .statusCode(400)
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 
     @Test
     public void errorWhileCreationCourierWithoutPassword() {
-        Courier courierWithoutPassword = new Courier();
-        courierWithoutPassword.setLogin(RandomStringUtils.randomAlphabetic(14))
+        courier.setLogin(RandomStringUtils.randomAlphabetic(14))
                     .setFirstName(RandomStringUtils.randomAlphabetic(14));
 
         courierSteps
-                .createCourier(courierWithoutPassword)
+                .createCourier(courier)
                 .statusCode(400)
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 
-    public void cleanCourier(Courier courier) {
-        Integer id = courierSteps.loginCourier(courier)
-                .extract().body().path("id");
-        courier.setId(id);
-        Allure.step("Удаление курьера по id", () -> {
-            courierSteps.deleteCourier(courier);
-        });
+    @After
+    public void tearDown() {
+        var response = courierSteps.loginCourier(courier);
+        int statusCode = response.extract().response().getStatusCode();
+        if (statusCode == 200) {
+            courierId = response.extract().path("id");
+            courier.setId(courierId);
+            Allure.step("Удаление курьера по id", () -> {
+                courierSteps.deleteCourier(courier);
+            });
+        }
     }
 }

@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import ru.practicum.model.Order;
-import ru.practicum.steps.CourierSteps;
 import ru.practicum.steps.OrderSteps;
 
 import static org.hamcrest.Matchers.notNullValue;
@@ -13,7 +12,6 @@ import java.util.List;
 
 @RunWith(Parameterized.class)
 public class CreateOrderTest extends BaseTest {
-    private CourierSteps courierSteps = new CourierSteps();
     private OrderSteps orderSteps = new OrderSteps();
     private static final String firstName = "Ivan";
     private static final String lastName = "Ivanov";
