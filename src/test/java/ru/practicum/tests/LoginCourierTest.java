@@ -16,13 +16,12 @@ public class LoginCourierTest extends BaseTest {
     @Before
     public void setUp() {
         courier = new Courier();
+        courier.setLogin(RandomStringUtils.randomAlphabetic(14));
+        courier.setPassword(RandomStringUtils.randomAlphabetic(14));
     }
 
     @Test
     public void loginCourierTest() {
-        courier.setLogin(RandomStringUtils.randomAlphabetic(14));
-        courier.setPassword(RandomStringUtils.randomAlphabetic(14));
-
         courierSteps
                 .createCourier(courier);
         Integer id = courierSteps.loginCourier(courier)
@@ -34,8 +33,7 @@ public class LoginCourierTest extends BaseTest {
 
     @Test
     public void errorWhileLoginCourierWithoutLoginTest() {
-        courier.setPassword(RandomStringUtils.randomAlphabetic(14));
-
+        courier.setLogin(null);
         courierSteps.loginCourier(courier)
                 .statusCode(400)
                 .body("message", equalTo("Недостаточно данных для входа"));
@@ -43,8 +41,7 @@ public class LoginCourierTest extends BaseTest {
 
     @Test
     public void errorWhileLoginCourierWithoutPasswordTest() {
-        courier.setLogin(RandomStringUtils.randomAlphabetic(14));
-
+        courier.setPassword(null);
         courierSteps.loginCourier(courier)
                 .statusCode(400)
                 .body("message", equalTo("Недостаточно данных для входа"));
@@ -52,9 +49,6 @@ public class LoginCourierTest extends BaseTest {
 
     @Test
     public void errorWhileLoginCourierWithIncorrectPareLoginPasswordTest() {
-        courier.setLogin(RandomStringUtils.randomAlphabetic(14));
-        courier.setPassword(RandomStringUtils.randomAlphabetic(14));
-
         courierSteps.loginCourier(courier)
                 .statusCode(404)
                 .body("message", equalTo("Учетная запись не найдена"));
