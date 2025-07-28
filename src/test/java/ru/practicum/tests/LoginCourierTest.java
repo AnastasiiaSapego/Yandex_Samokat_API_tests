@@ -18,12 +18,11 @@ public class LoginCourierTest extends BaseTest {
         courier = new Courier();
         courier.setLogin(RandomStringUtils.randomAlphabetic(14));
         courier.setPassword(RandomStringUtils.randomAlphabetic(14));
+        courierSteps.createCourier(courier);
     }
 
     @Test
     public void loginCourierTest() {
-        courierSteps
-                .createCourier(courier);
         Integer id = courierSteps.loginCourier(courier)
                 .statusCode(200)
                 .extract().body().path("id");
@@ -49,6 +48,7 @@ public class LoginCourierTest extends BaseTest {
 
     @Test
     public void errorWhileLoginCourierWithIncorrectPareLoginPasswordTest() {
+        courier.setPassword(RandomStringUtils.randomAlphabetic(14));
         courierSteps.loginCourier(courier)
                 .statusCode(404)
                 .body("message", equalTo("Учетная запись не найдена"));
