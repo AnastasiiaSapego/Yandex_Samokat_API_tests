@@ -1,4 +1,4 @@
-# Stellar Burgers API tests
+# Yandex Samokat API tests
 
 ## Технологии
 | Компонент | Версия |
